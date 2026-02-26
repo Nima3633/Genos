@@ -11,12 +11,13 @@
   :root {
     --bg: #050810;
     --surface: #0d1120;
+    --surface2: #111827;
     --border: rgba(255,255,255,0.07);
     --accent: #00e5ff;
     --accent2: #7c6bff;
     --text: #e8eaf6;
     --muted: #6b7280;
-    --glow: rgba(0, 229, 255, 0.15);
+    --success: #10b981;
   }
 
   html { scroll-behavior: smooth; }
@@ -29,7 +30,6 @@
     overflow-x: hidden;
   }
 
-  /* ── NOISE OVERLAY ── */
   body::before {
     content: '';
     position: fixed;
@@ -45,48 +45,101 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 100;
-    padding: 1.25rem 2.5rem;
+    padding: 1rem 2rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(20px);
-    background: rgba(5,8,16,0.7);
+    background: rgba(5,8,16,0.9);
+    gap: 1rem;
   }
 
   .logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     letter-spacing: -0.02em;
     color: var(--text);
+    flex-shrink: 0;
   }
   .logo span { color: var(--accent); }
 
-  nav ul {
+  .nav-links {
     list-style: none;
     display: flex;
-    gap: 2.5rem;
+    gap: 1.5rem;
     align-items: center;
+    flex-wrap: nowrap;
   }
-  nav ul a {
+  .nav-links a {
     color: var(--muted);
     text-decoration: none;
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
     transition: color 0.2s;
   }
-  nav ul a:hover { color: var(--text); }
+  .nav-links a:hover { color: var(--text); }
 
   .nav-cta {
     background: var(--accent);
     color: var(--bg) !important;
-    padding: 0.5rem 1.25rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 100px;
-    font-weight: 400 !important;
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    flex-shrink: 0;
     transition: opacity 0.2s !important;
   }
   .nav-cta:hover { opacity: 0.85; }
+
+  /* Hamburger */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    color: var(--text);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  /* Mobile drawer */
+  @media (max-width: 768px) {
+    .nav-toggle { display: block; }
+
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 57px; left: 0; right: 0;
+      background: rgba(5,8,16,0.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      z-index: 99;
+      padding: 0.5rem 0;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block;
+      padding: 0.85rem 1.75rem;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-links li:last-child a { border-bottom: none; }
+    .nav-cta {
+      margin: 0.75rem 1.75rem;
+      display: inline-block;
+      border-radius: 8px !important;
+    }
+  }
 
   /* ── HERO ── */
   .hero {
@@ -117,12 +170,16 @@
     width: 400px; height: 400px;
     background: radial-gradient(circle, rgba(124,107,255,0.15) 0%, transparent 70%);
     bottom: 100px; right: -100px;
-    animation: pulse 8s ease-in-out infinite reverse;
+    animation: pulse2 8s ease-in-out infinite;
   }
 
   @keyframes pulse {
     0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
     50% { transform: translateX(-50%) scale(1.1); opacity: 0.7; }
+  }
+  @keyframes pulse2 {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
   }
 
   .hero-badge {
@@ -219,7 +276,7 @@
 
   .hero-inner { position: relative; z-index: 1; }
 
-  /* ── FEATURES ── */
+  /* ── SHARED ── */
   section { padding: 5rem 2rem; }
   .container { max-width: 1100px; margin: 0 auto; }
 
@@ -248,6 +305,40 @@
     margin-bottom: 3.5rem;
   }
 
+  /* ── STATS ── */
+  .stats-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 3.5rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .stats-grid {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.8rem;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FEATURES ── */
   .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -292,49 +383,180 @@
     line-height: 1.6;
   }
 
-  /* ── STATS ── */
-  .stats-section {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 3.5rem 2rem;
-  }
-  .stats-grid {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .stat-num {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 2.8rem;
-    color: var(--accent);
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-  .stat-label {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin-top: 0.4rem;
-    letter-spacing: 0.04em;
-  }
-
-  /* ── DIVIDER ── */
   .divider {
     border: none;
     border-top: 1px solid var(--border);
   }
 
-  /* ── PRIVACY ── */
-  #privacy { background: var(--surface); border-radius: 0; }
-
-  .privacy-content {
-    max-width: 720px;
+  /* ── SMS OPT-IN ── */
+  #sms-signup {
+    background: linear-gradient(135deg, #0a0f1e 0%, #0d1525 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
   }
+
+  #sms-signup::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%);
+    top: -150px; right: -100px;
+    pointer-events: none;
+  }
+
+  .sms-inner {
+    max-width: 680px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sms-card {
+    background: var(--surface);
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+  }
+
+  .sms-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .sms-card .sms-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .sms-form-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .sms-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .sms-input::placeholder { color: var(--muted); }
+  .sms-input:focus { border-color: rgba(0,229,255,0.4); }
+
+  .sms-btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.8rem 1.75rem;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+  .sms-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+  .sms-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .sms-checkbox-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .sms-checkbox-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .sms-checkbox-row label {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    line-height: 1.6;
+    cursor: pointer;
+  }
+
+  .sms-checkbox-row label a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .sms-checkbox-row label a:hover { text-decoration: underline; }
+
+  .sms-fine-print {
+    font-size: 0.78rem;
+    color: #4b5563;
+    line-height: 1.5;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .sms-success {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    color: #6ee7b7;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+  .sms-success.visible { display: flex; }
+  .sms-success-icon { font-size: 1.2rem; }
+
+  .sms-error {
+    font-size: 0.82rem;
+    color: #f87171;
+    margin-top: 0.4rem;
+    display: none;
+  }
+  .sms-error.visible { display: block; }
+
+  /* ── WHAT YOU GET (SMS bullets) ── */
+  .sms-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .sms-benefit-tag {
+    background: rgba(0,229,255,0.05);
+    border: 1px solid rgba(0,229,255,0.12);
+    border-radius: 100px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.78rem;
+    color: #9ca3af;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── ABOUT ── */
+  #about { padding-top: 2rem; padding-bottom: 5rem; }
+
+  /* ── PRIVACY ── */
+  #privacy { background: var(--surface); }
+
+  .privacy-content { max-width: 720px; }
 
   .privacy-content h3 {
     font-family: 'Syne', sans-serif;
@@ -345,7 +567,8 @@
   }
   .privacy-content h3:first-of-type { margin-top: 0; }
 
-  .privacy-content p, .privacy-content li {
+  .privacy-content p,
+  .privacy-content li {
     color: var(--muted);
     font-size: 0.92rem;
     line-height: 1.75;
@@ -354,6 +577,21 @@
   .privacy-content ul {
     padding-left: 1.25rem;
     margin-top: 0.4rem;
+  }
+
+  .privacy-content a { color: var(--accent); text-decoration: none; }
+  .privacy-content a:hover { text-decoration: underline; }
+
+  .privacy-highlight {
+    background: rgba(0,229,255,0.04);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+  }
+  .privacy-highlight p {
+    color: #c4c9d4 !important;
+    font-size: 0.9rem !important;
   }
 
   .privacy-date {
@@ -368,11 +606,61 @@
     letter-spacing: 0.04em;
   }
 
+  /* ── CONTACT ── */
+  #contact {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color 0.3s;
+  }
+  .contact-card:hover { border-color: rgba(0,229,255,0.2); }
+
+  .contact-card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .contact-card p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-card a {
+    color: var(--accent);
+    font-size: 0.88rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .contact-card a:hover { opacity: 0.75; }
+
   /* ── FOOTER ── */
   footer {
     padding: 3rem 2rem;
     text-align: center;
     border-top: 1px solid var(--border);
+    background: var(--surface);
   }
   .footer-logo {
     font-family: 'Syne', sans-serif;
@@ -381,36 +669,59 @@
     margin-bottom: 0.75rem;
   }
   .footer-logo span { color: var(--accent); }
-  footer p {
+
+  footer > p {
     color: var(--muted);
     font-size: 0.85rem;
+    margin-bottom: 1.25rem;
   }
-  footer nav {
-    position: static;
-    background: none;
-    border: none;
-    backdrop-filter: none;
-    padding: 1rem 0 0;
-    justify-content: center;
-  }
-  footer nav ul { justify-content: center; gap: 2rem; }
 
+  .footer-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-legal {
+    font-size: 0.75rem;
+    color: #374151;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .sms-form-row { flex-direction: column; }
+    .sms-btn { width: 100%; }
+  }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ── NAV ── -->
 <nav>
   <div class="logo">genos<span>.</span>ai</div>
-  <ul>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#privacy">Privacy</a></li>
-    <li><a href="#" class="nav-cta">Get Early Access</a></li>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#features" onclick="closeNav()">Features</a></li>
+    <li><a href="#sms-signup" onclick="closeNav()">SMS Updates</a></li>
+    <li><a href="#privacy" onclick="closeNav()">Privacy</a></li>
+    <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+    <li><a href="#sms-signup" class="nav-cta" onclick="closeNav()">Get Early Access</a></li>
   </ul>
+  <button class="nav-toggle" id="nav-toggle" onclick="toggleNav()" aria-label="Toggle menu">☰</button>
 </nav>
 
-<!-- HERO -->
+<!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-orb orb1"></div>
   <div class="hero-orb orb2"></div>
@@ -419,13 +730,13 @@
     <h1>AI Agents that<br><em>think ahead</em></h1>
     <p>Genos AI builds autonomous agents that understand context, learn from interactions, and execute complex tasks — so your team can focus on what matters.</p>
     <div class="hero-actions">
-      <a href="#" class="btn-primary">Request Access</a>
+      <a href="#sms-signup" class="btn-primary">Request Access</a>
       <a href="#features" class="btn-ghost">See How It Works</a>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
+<!-- ── STATS ── -->
 <div class="stats-section">
   <div class="stats-grid">
     <div>
@@ -447,7 +758,7 @@
   </div>
 </div>
 
-<!-- FEATURES -->
+<!-- ── FEATURES ── -->
 <section id="features">
   <div class="container">
     <div class="section-label">Capabilities</div>
@@ -489,10 +800,10 @@
   </div>
 </section>
 
-<!-- ABOUT -->
-<section id="about" style="padding-top: 2rem; padding-bottom: 5rem;">
+<!-- ── ABOUT ── -->
+<section id="about">
   <div class="container">
-    <hr class="divider" style="margin-bottom: 5rem;">
+    <hr class="divider" style="margin-bottom: 4rem;">
     <div class="section-label">About Genos AI</div>
     <h2 class="section-title">A new layer of<br>intelligence for work</h2>
     <p style="color: var(--muted); font-size: 1rem; line-height: 1.8; max-width: 650px;">
@@ -503,70 +814,244 @@
   </div>
 </section>
 
-<!-- PRIVACY POLICY -->
+<!-- ── SMS OPT-IN ── -->
+<section id="sms-signup">
+  <div class="container">
+    <div class="sms-inner">
+      <div class="section-label">SMS Updates</div>
+      <h2 class="section-title">Stay in the loop</h2>
+      <p class="section-sub">Get notified when Genos AI launches, announces new features, or shares early access opportunities — straight to your phone.</p>
+
+      <div class="sms-card">
+        <h3>Subscribe to SMS Alerts</h3>
+        <p class="sms-desc">Enter your mobile number below to receive automated text message updates from Genos AI. We send only relevant product updates — no spam, ever.</p>
+
+        <div class="sms-benefits">
+          <span class="sms-benefit-tag">🚀 Launch announcements</span>
+          <span class="sms-benefit-tag">🎟 Early access invites</span>
+          <span class="sms-benefit-tag">🛠 Feature releases</span>
+          <span class="sms-benefit-tag">📣 Important updates</span>
+        </div>
+
+        <div class="sms-form-row">
+          <input
+            type="tel"
+            id="sms-phone"
+            class="sms-input"
+            placeholder="+1 (555) 000-0000"
+            maxlength="20"
+            autocomplete="tel"
+          />
+          <button class="sms-btn" id="sms-submit-btn" onclick="handleSmsSubmit()">Subscribe</button>
+        </div>
+        <div class="sms-error" id="sms-phone-error">Please enter a valid US phone number.</div>
+        <div class="sms-error" id="sms-consent-error">You must agree to the terms to subscribe.</div>
+
+        <!-- MANDATORY CONSENT CHECKBOX -->
+        <div class="sms-checkbox-row">
+          <input type="checkbox" id="sms-consent" name="sms-consent" />
+          <label for="sms-consent">
+            I agree to receive automated messages from <strong>Genos AI</strong>. Message and data rates may apply. Reply <strong>STOP</strong> to opt-out at any time. Reply <strong>HELP</strong> for help. View our <a href="#privacy">Privacy Policy</a>.
+          </label>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div class="sms-success" id="sms-success">
+          <span class="sms-success-icon">✅</span>
+          <span>You're subscribed! You'll receive a confirmation text shortly. Reply STOP at any time to unsubscribe.</span>
+        </div>
+
+        <p class="sms-fine-print">
+          By subscribing, you consent to receive recurring automated marketing and informational text messages from Genos AI at the number provided. Consent is not a condition of purchase. Message frequency may vary. Message &amp; data rates may apply. To stop receiving messages, reply <strong>STOP</strong> at any time. For assistance, reply <strong>HELP</strong> or contact us at <a href="mailto:support@genosai.com" style="color: var(--accent);">support@genosai.com</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRIVACY POLICY ── -->
 <section id="privacy">
   <div class="container">
     <div class="section-label">Legal</div>
     <h2 class="section-title">Privacy Policy</h2>
     <div class="privacy-content">
-      <span class="privacy-date">Last updated: February 25, 2026</span>
+      <span class="privacy-date">Last updated: February 26, 2026</span>
 
       <h3>1. Introduction</h3>
-      <p>Welcome to Genos AI ("Company," "we," "us," or "our"). We are committed to protecting your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you visit our website or use our platform.</p>
+      <p>Welcome to Genos AI ("Company," "we," "us," or "our"). We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you visit our website or use our platform and SMS messaging services.</p>
 
       <h3>2. Information We Collect</h3>
       <p>We may collect the following types of information:</p>
       <ul>
         <li><strong>Account Information:</strong> Name, email address, company name, and password when you create an account.</li>
+        <li><strong>Phone Numbers:</strong> Mobile phone numbers voluntarily provided when you opt in to receive SMS communications from Genos AI.</li>
         <li><strong>Usage Data:</strong> Information about how you interact with the Genos AI platform, including agent activity logs, feature usage, and session data.</li>
         <li><strong>Technical Data:</strong> IP address, browser type, device identifiers, and operating system.</li>
         <li><strong>Communications:</strong> Any messages or feedback you send to us.</li>
       </ul>
 
-      <h3>3. How We Use Your Information</h3>
-      <p>We use your information to provide and improve our services, authenticate your identity, send important notices and updates, respond to support requests, comply with legal obligations, and analyze usage trends to improve the product.</p>
+      <h3>3. SMS Communications & Phone Number Data</h3>
+      <div class="privacy-highlight">
+        <p><strong>We do not share or sell your personal information or phone numbers with third parties for marketing purposes.</strong> Phone numbers collected through our SMS opt-in program are used solely to deliver the specific communications you have consented to receive from Genos AI.</p>
+      </div>
+      <p>When you opt in to receive SMS messages from Genos AI, you agree to receive automated text messages at the number you provide. Message frequency varies. Standard message and data rates may apply. You may opt out at any time by replying <strong>STOP</strong> to any message. After opting out, you will receive one final confirmation message. To re-subscribe, reply <strong>START</strong>. For help, reply <strong>HELP</strong> or contact support@genosai.com.</p>
 
-      <h3>4. Data Sharing</h3>
-      <p>We do not sell your personal data. We may share data with trusted third-party service providers (such as cloud infrastructure and analytics partners) under strict confidentiality agreements, and as required by law or legal process.</p>
+      <h3>4. How We Use Your Information</h3>
+      <p>We use your information to provide and improve our services, authenticate your identity, send important notices and updates (including via SMS where consented), respond to support requests, comply with legal obligations, and analyze usage trends to improve the product.</p>
 
-      <h3>5. Data Retention</h3>
-      <p>We retain your personal data for as long as your account is active or as needed to provide services. You may request deletion of your data at any time by contacting us at privacy@genos.ai.</p>
+      <h3>5. Data Sharing & Third Parties</h3>
+      <div class="privacy-highlight">
+        <p><strong>We do not sell, rent, or share your personal information or phone numbers with third parties for their marketing purposes.</strong></p>
+      </div>
+      <p>We may share data with trusted third-party service providers (such as cloud infrastructure, SMS delivery, and analytics partners) strictly as needed to operate our services, under confidentiality agreements that prohibit them from using your data for any other purpose. We may also disclose data as required by applicable law or legal process.</p>
 
-      <h3>6. Security</h3>
-      <p>We implement industry-standard security measures including encryption at rest and in transit, access controls, and regular security audits. No method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
+      <h3>6. Data Retention</h3>
+      <p>We retain your personal data for as long as your account is active or as needed to provide services. SMS opt-in records are retained for a minimum of 4 years to comply with telecommunications regulations. You may request deletion of your data at any time by contacting us at <a href="mailto:privacy@genosai.com">privacy@genosai.com</a>.</p>
 
-      <h3>7. Your Rights</h3>
-      <p>Depending on your jurisdiction, you may have the right to access, correct, export, or delete your personal data. To exercise these rights, contact us at privacy@genos.ai. We will respond within 30 days.</p>
+      <h3>7. Security</h3>
+      <p>We implement industry-standard security measures including encryption at rest and in transit, strict access controls, and regular security audits. No method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.</p>
 
-      <h3>8. Cookies</h3>
+      <h3>8. Your Rights</h3>
+      <p>Depending on your jurisdiction, you may have the right to access, correct, export, or delete your personal data. To exercise these rights, contact us at <a href="mailto:privacy@genosai.com">privacy@genosai.com</a>. We will respond within 30 days.</p>
+
+      <h3>9. Cookies</h3>
       <p>We use essential cookies for authentication and functionality, and optional analytics cookies to understand usage. You may manage cookie preferences through your browser settings.</p>
 
-      <h3>9. Children's Privacy</h3>
+      <h3>10. Children's Privacy</h3>
       <p>Our services are not directed at children under 13. We do not knowingly collect personal data from children. If you believe we have inadvertently collected such data, please contact us immediately.</p>
 
-      <h3>10. Changes to This Policy</h3>
-      <p>We may update this Privacy Policy periodically. We will notify you of material changes via email or a prominent notice on our website. Continued use of our services after changes constitutes acceptance.</p>
+      <h3>11. Changes to This Policy</h3>
+      <p>We may update this Privacy Policy periodically. We will notify you of material changes via email or a prominent notice on our website. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
 
-      <h3>11. Contact Us</h3>
+      <h3>12. Contact Us</h3>
       <p>For questions about this policy or your data, reach us at:<br>
-      <strong style="color: var(--text);">Genos AI · privacy@genos.ai</strong></p>
+      <strong style="color: var(--text);">Genos AI &nbsp;·&nbsp; <a href="mailto:privacy@genosai.com">privacy@genosai.com</a></strong></p>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Contact Us</h2>
+    <p class="section-sub" style="margin-bottom: 0;">Have a question, need support, or want to explore a partnership? We'd love to hear from you.</p>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-card-icon">📬</div>
+        <h4>General Inquiries</h4>
+        <p>Questions about Genos AI, our platform, or early access.</p>
+        <a href="mailto:hello@genosai.com">hello@genosai.com</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">🛠</div>
+        <h4>Technical Support</h4>
+        <p>Need help with your account or experiencing an issue?</p>
+        <a href="mailto:support@genosai.com">support@genosai.com</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">🔒</div>
+        <h4>Privacy & Data</h4>
+        <p>Requests related to your personal data, SMS opt-out, or privacy policy.</p>
+        <a href="mailto:privacy@genosai.com">privacy@genosai.com</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-card-icon">🤝</div>
+        <h4>Partnerships</h4>
+        <p>Interested in integrating or partnering with Genos AI?</p>
+        <a href="mailto:partners@genosai.com">partners@genosai.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
 <footer>
   <div class="footer-logo">genos<span>.</span>ai</div>
-  <p>© 2026 Genos AI. All rights reserved.</p>
-  <nav>
-    <ul>
-      <li><a href="#features">Features</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#privacy">Privacy Policy</a></li>
-      <li><a href="mailto:hello@genos.ai">Contact</a></li>
-    </ul>
-  </nav>
+  <p>© 2026 Genos AI, Inc. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#sms-signup">SMS Sign-Up</a></li>
+    <li><a href="#privacy">Privacy Policy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <p class="footer-legal">
+    Genos AI provides automated SMS messaging services. By opting in, you agree to receive recurring automated text messages. Message &amp; data rates may apply. Reply STOP to cancel, HELP for help. We do not sell or share your phone number with third parties for marketing purposes.
+  </p>
 </footer>
+
+<script>
+  function toggleNav() {
+    const links = document.getElementById('nav-links');
+    const btn = document.getElementById('nav-toggle');
+    links.classList.toggle('open');
+    btn.textContent = links.classList.contains('open') ? '✕' : '☰';
+  }
+
+  function closeNav() {
+    const links = document.getElementById('nav-links');
+    const btn = document.getElementById('nav-toggle');
+    links.classList.remove('open');
+    btn.textContent = '☰';
+  }
+
+  // Close nav on outside click
+  document.addEventListener('click', function(e) {
+    const nav = document.querySelector('nav');
+    if (!nav.contains(e.target)) closeNav();
+  });
+
+  function handleSmsSubmit() {
+    const phoneInput = document.getElementById('sms-phone');
+    const consentBox = document.getElementById('sms-consent');
+    const phoneError = document.getElementById('sms-phone-error');
+    const consentError = document.getElementById('sms-consent-error');
+    const successMsg = document.getElementById('sms-success');
+    const submitBtn = document.getElementById('sms-submit-btn');
+
+    // Reset errors
+    phoneError.classList.remove('visible');
+    consentError.classList.remove('visible');
+
+    const phone = phoneInput.value.trim();
+    const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    let valid = true;
+
+    if (!phoneRegex.test(phone.replace(/\s/g, ''))) {
+      phoneError.classList.add('visible');
+      valid = false;
+    }
+
+    if (!consentBox.checked) {
+      consentError.classList.add('visible');
+      valid = false;
+    }
+
+    if (!valid) return;
+
+    // Simulate submission
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Subscribing...';
+
+    setTimeout(() => {
+      phoneInput.value = '';
+      consentBox.checked = false;
+      submitBtn.textContent = 'Subscribe';
+      submitBtn.disabled = false;
+      successMsg.classList.add('visible');
+
+      // Auto-hide success after 8 seconds
+      setTimeout(() => successMsg.classList.remove('visible'), 8000);
+    }, 1200);
+  }
+
+  // Allow Enter key to submit
+  document.getElementById('sms-phone').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') handleSmsSubmit();
+  });
+</script>
 
 </body>
 </html>
